@@ -1,5 +1,13 @@
+import pathlib
 # Create a class to hold a city location. Call the class "City". It should have
 # fields for name, lat and lon (representing latitude and longitude).
+class City:
+  def __init__(self, name, lat, lon):
+    self.name = name
+    self.lat = float(lat)
+    self.lon = float(lon)
+  def __str__(self):
+    return f'({self.name},{self.lat},{self.lon})'
 
 
 # We have a collection of US cities with population over 750,000 stored in the
@@ -20,8 +28,18 @@ def cityreader(cities=[]):
   # TODO Implement the functionality to read from the 'cities.csv' file
   # For each city record, create a new City instance and add it to the 
   # `cities` list
+    directory = pathlib.Path(__file__).parent.absolute()
+    cities_txt = open(f'{directory}/cities.csv', 'r').read()
+    cities_rows = cities_txt.split('\n')
+    cities_rows.pop(0)
+    if (cities_rows[-1]) == '':
+      cities_rows.pop()
+    for row in cities_rows:
+      columns = row.split(',')
+      cities.append(City(columns[0], columns[3], columns[4]))
     
     return cities
+   
 
 cityreader(cities)
 
